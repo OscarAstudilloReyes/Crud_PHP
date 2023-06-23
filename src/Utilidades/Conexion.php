@@ -1,8 +1,9 @@
 <?php
 
-namespace Utils;
+namespace Utilidades;
+require_once('../Utilidades/Configuracion.php');
 
-class Database
+class Conexion
 {
     private static $instance;
     private $connection;
@@ -12,6 +13,7 @@ class Database
          // Configurar la conexión a la base de datos
         $dsn = 'mysql:host=' . DB_HOSTNAME . ';dbname=' . DB_NAME;
         $this->connection = new \PDO($dsn, DB_USER, DB_PASSWORD);
+        
     }
 
     public static function getInstance()

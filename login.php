@@ -1,11 +1,18 @@
 <?php
-require_once './src/Controlador/LoginControlador.php';
+require_once './src/Controlador/UsuarioControlador.php';
 // Obtener los valores del formulario de login
 $usuario = $_POST['usuario'] ?? '';
 $contrasenia = $_POST['contrasenia'] ?? '';
-$loginControlador = new LoginControlador();
+$usuarioControlador = new UsuarioControlador();
 
 
-$respuesta = $loginControlador->autenticacion($usuario, $contrasenia);
+$respuesta = $usuarioControlador->autenticacion($usuario, $contrasenia);
 
-echo json_encode($respuesta);
+
+if($respuesta['exito'] == 0){
+    echo '<script>alert("Credenciales incorrectas");</script>';
+    echo '<script>window.location.href = "/prueba-tecnica/";</script>';
+}else{
+    header("Location: /prueba-tecnica/src/Vista/principal.html");
+}
+exit();

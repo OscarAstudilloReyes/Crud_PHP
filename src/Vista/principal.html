@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+
+  <title>Documentación</title>
+  <script src="../../vendor/components/jquery/jquery.min.js"></script>
+  <script src="../../vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
+  <link href="../../vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="principal.css" rel="stylesheet" />
+  <script src="principal.js"></script>
+</head>
+
+<body>
+  <header class="p-3 bg-dark text-white">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+            <use xlink:href="#bootstrap"></use>
+          </svg>
+        </a>
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="#" class="nav-link px-2 text-secondary">Inicio</a></li>
+        </ul>
+        <div class="text-end">
+          <button type="button" id="btnSalir" class="btn btn-warning">
+            Salir
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="container">
+    <ul class="nav nav-tabs mt-3" id="menuTabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="tab" href="#contenido1">Documentos</a>
+      </li>
+      <li class="nav-item" id="liGuardar">
+        <a class="nav-link"  data-bs-toggle="tab" href="#contenido2">Nuevo/Guardar</a>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="contenidos">
+      <div class="text-end">
+        <input type="text"  id="txtCodigoBuscar" name="txtCodigoBuscar" required>
+        <button type="button" id="btnBuscar" class="btn btn-success">
+         Buscar por codigo
+        </button>
+      </div>
+      <div class="tab-pane fade show active" id="contenido1">
+        <table id="tblDocumentacion" class="table table-bordered table-striped mt-5">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Código</th>
+              <th>Contenido</th>
+              <th>Tipo</th>
+              <th>Proceso</th>
+              <th colspan="2">Acción</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="contenido2">
+        <form class="mt-5 ">
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="txtNombre" name="txtNombre" required>
+          </div>
+        
+          <div class="mb-3">
+            <label for="contenido" class="form-label">Contenido</label>
+            <textarea class="form-control" id="txtContenido" name="txtContenido" rows="4" required></textarea>
+          </div>
+        
+          <div class="mb-3">
+            <label for="tipo" class="form-label">Tipo</label>
+            <select class="form-select" id="selTipoDocumento" name="selTipoDocumento" required>
+              <option value="">Seleccionar tipo</option>
+            </select>
+          </div>
+        
+          <div class="mb-3">
+            <label for="proceso" class="form-label">Proceso</label>
+            <select class="form-select" id="selProceso" name="selProceso" required>
+              <option value="">Seleccionar proceso</option>
+            </select>
+          </div>
+        
+          <button type="button" id="btnGuardar" class="btn btn-primary">Guardar</button>
+        </form>
+        
+
+
+
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
