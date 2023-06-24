@@ -122,9 +122,11 @@ class Documento
     public function generarCodigoDocumento($datos) {
         $retorno = ['exito' => 1, 'datos' => [], 'mensaje' => ''];
         $res = $this->obtenerUltimoConsecutivo($datos['idTipoDocumento'], $datos['idProceso']);
+        $consecutivo = 0;
+        if($res['datos'] !== null && $res['datos'] !== false) {
+            $consecutivo = explode('-',$res['datos']['DOC_CODIGO'])[2];
+        }
         
-        $consecutivo = explode('-',$res['datos']['DOC_CODIGO'])[2];
-        $consecutivo  == null ? 1 : $consecutivo  ;
         $nuevoConsecutivo =  $consecutivo   + 1;
 
         $codigo = $datos['tipoDocumentoPrefijo'] . '-' . $datos['procesoPrefijo'] . '-' . $nuevoConsecutivo;
