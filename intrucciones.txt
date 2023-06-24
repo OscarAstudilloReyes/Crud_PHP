@@ -1,0 +1,2 @@
+En la siguiente  url podra ver las indicaciones para instalar y probar el proyecto
+https://github.com/OscarAstudilloReyes/Crud_PHP/tree/master
