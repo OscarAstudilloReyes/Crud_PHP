@@ -1,4 +1,4 @@
-Instalación de requisitos:
+Proceso de instalacion del proyecto
 
 Asegúrarse de tener instalado PHP en tu sistema.
 Instala un servidor local como Laragon o XAMPP, que incluyen Apache y MySQL.
