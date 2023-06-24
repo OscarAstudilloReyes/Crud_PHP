@@ -6,7 +6,10 @@ Verifica que tengas MySQL instalado y configurado correctamente.
 Instala Composer, la herramienta de administración de dependencias de PHP.
 Configuración de la base de datos:
 
-Ve a la carpeta "src/Utilidades" y busca el archivo "configuracion.php".
+Para obtener la base de datos del proyecto, debe dirigirse a la carpeta bd/ que esta en la raiz del proyecto.
+
+
+Una vez montado la bd en su equipo, tiene que ir  la carpeta "src/Utilidades" y busca el archivo "configuracion.php".
 Abre el archivo "configuracion.php" en un editor de texto.
 En el archivo, encontrarás una sección para configurar la conexión a la base de datos.
 Proporciona el nombre de la base de datos, el usuario y la contraseña de tu usuario de MySQL.
