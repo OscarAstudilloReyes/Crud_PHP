@@ -5,6 +5,7 @@ $(document).ready(function () {
   cargarSelectProceso();
   cargarSelectTipoDocumento();
   $("#btnGuardar").click(function () {
+    validacionesGuardar();
     guardarDocumento();
   });
 
@@ -13,7 +14,11 @@ $(document).ready(function () {
   });
 
   $("#btnSalir").click(function () {
-    cerrarSession();
+    var confirmacion = confirm("¿Desea salir de la aplicación?");
+    if (confirmacion) {
+      cerrarSession();
+    }
+
   });
 
 });
@@ -42,8 +47,8 @@ function cargarTabla() {
         row.append($("<td>").text(documento.TIP_NOMBRE));
         // Agregar columna de Acción con opciones de editar y eliminar
         var accionColumn = $("<td>");
-        var editarBtn = $("<button>").text("Editar");
-        var eliminarBtn = $("<button>").text("Eliminar");
+        var editarBtn = $("<button>").text("Editar").addClass("btn btn-success btn-sm");;
+        var eliminarBtn = $("<button>").text("Eliminar").addClass("btn btn-danger btn-sm");
 
         // Agregar eventos a los botones de editar y eliminar
         editarBtn.on("click", function () {
@@ -52,8 +57,12 @@ function cargarTabla() {
         });
 
         eliminarBtn.on("click", function () {
-          // Acción para eliminar
-          eliminarDocumento(documento.DOC_ID);
+          var confirmacion = confirm("¿Desea eliminar el documento?");
+          if (confirmacion) {
+            // Acción para eliminar
+            eliminarDocumento(documento.DOC_ID);
+          }
+
         });
 
         // Agregar los botones a la columna de Acción
@@ -84,7 +93,7 @@ function cargarSelectProceso() {
       if (json.datos != null) {
         $.each(json.datos, function (id, value) {
           $("#selProceso").append(
-            '<option value="' + value.PRO_ID +'"   data-proceso_prefijo="' + value.PRO_PREFIJO +'">' +value.PRO_NOMBRE +"</option>"
+            '<option value="' + value.PRO_ID + '"   data-proceso_prefijo="' + value.PRO_PREFIJO + '">' + value.PRO_NOMBRE + "</option>"
           );
         });
       }
@@ -106,7 +115,7 @@ function cargarSelectTipoDocumento() {
       if (json.datos != null) {
         $.each(json.datos, function (id, value) {
           $("#selTipoDocumento").append(
-            '<option value="' + value.TIP_ID +'"   data-tipo_documento_prefijo="' + value.TIP_PREFIJO +'">' +value.TIP_NOMBRE +"</option>"
+            '<option value="' + value.TIP_ID + '"   data-tipo_documento_prefijo="' + value.TIP_PREFIJO + '">' + value.TIP_NOMBRE + "</option>"
           );
         });
       }
@@ -128,13 +137,16 @@ function guardarDocumento() {
       contenido: $("#txtContenido").val(),
       idTipoDocumento: $("#selTipoDocumento").val(),
       tipoDocumentoPrefijo: $("#selTipoDocumento").find("option:selected").data("tipo_documento_prefijo"),
-      procesoPrefijo:$("#selProceso").find("option:selected").data('proceso_prefijo'),
+      procesoPrefijo: $("#selProceso").find("option:selected").data('proceso_prefijo'),
       idProceso: $("#selProceso").val(),
     },
     dataType: "json",
     success: function (json) {
-        cargarTabla();
-        idDocumento = null;
+      cargarTabla();
+      idDocumento = null;
+      alert(json.mensaje);
+      limpiar();
+      $("#liPrincipal").find(".nav-link")[0].click();
     },
     error: function () {
       console.log("Error al guardar los documentos");
@@ -143,118 +155,162 @@ function guardarDocumento() {
 }
 
 
-function eliminarDocumento(id){
-    $.ajax({
-        url: "../Controlador/DocumentoControlador.php",
-        type: "POST",
-        data: {
-          accion: "eliminar",
-          idDocumento: id,
-        },
-        dataType: "json",
-        success: function (json) {
-            cargarTabla();
-        },
-        error: function () {
-          console.log("Error al eliminar el documento seleccionado");
-        },
-      });
+function eliminarDocumento(id) {
+  $.ajax({
+    url: "../Controlador/DocumentoControlador.php",
+    type: "POST",
+    data: {
+      accion: "eliminar",
+      idDocumento: id,
+    },
+    dataType: "json",
+    success: function (json) {
+      cargarTabla();
+      alert(json.mensaje);
+      limpiar();
+    },
+    error: function () {
+      console.log("Error al eliminar el documento seleccionado");
+    },
+  });
 }
 
-function editarDocumento(id){
-    mostrarDocumentoPorId(id);
-    idDocumento = id;
+function editarDocumento(id) {
+  mostrarDocumentoPorId(id);
+  idDocumento = id;
 }
 
-function mostrarDocumentoPorId(id){
-    $.ajax({
-        url: "../Controlador/DocumentoControlador.php",
-        type: "POST",
-        data: {
-          accion: "mostrarPorId",
-          idDocumento: id,
-        },
-        dataType: "json",
-        success: function (json) {
-            $("#liGuardar").find(".nav-link")[0].click();
-            $("#txtNombre").val(json.datos[0].DOC_NOMBRE);
-            $("#txtContenido").val(json.datos[0].DOC_CONTENIDO);
-            $("#selTipoDocumento").val(json.datos[0].DOC_ID_TIPO);
-            $("#selProceso").val(json.datos[0].DOC_ID_TIPO);
-        },
-        error: function () {
-          console.log("Error al eliminar el documento seleccionado");
-        },
-      });
+function mostrarDocumentoPorId(id) {
+  $.ajax({
+    url: "../Controlador/DocumentoControlador.php",
+    type: "POST",
+    data: {
+      accion: "mostrarPorId",
+      idDocumento: id,
+    },
+    dataType: "json",
+    success: function (json) {
+      $("#liGuardar").find(".nav-link")[0].click();
+      $("#txtNombre").val(json.datos[0].DOC_NOMBRE);
+      $("#txtContenido").val(json.datos[0].DOC_CONTENIDO);
+      $("#selTipoDocumento").val(json.datos[0].DOC_ID_TIPO);
+      $("#selProceso").val(json.datos[0].DOC_ID_TIPO);
+    },
+    error: function () {
+      console.log("Error al eliminar el documento seleccionado");
+    },
+  });
 }
 
 
 function buscarDocumentoPorCodigo() {
-    $.ajax({
-      url: "../Controlador/DocumentoControlador.php",
-      type: "POST",
-      data: {
-        accion: "buscarPorCodigo",
-        codigo: $("#txtCodigoBuscar").val()
-      },
-      dataType: "json",
-      success: function (json) {
-        $("#tblDocumentacion tbody").empty();
-        $.each(json.datos, function (index, documento) {
-          // Crear una nueva fila
-          var row = $("<tr>");
-  
-          // Agregar las columnas de la tabla
-          row.append($("<td>").text(documento.DOC_NOMBRE));
-          row.append($("<td>").text(documento.DOC_CODIGO));
-          row.append($("<td>").text(documento.DOC_CONTENIDO));
-          row.append($("<td>").text(documento.PRO_NOMBRE));
-          row.append($("<td>").text(documento.TIP_NOMBRE));
-          // Agregar columna de Acción con opciones de editar y eliminar
-          var accionColumn = $("<td>");
-          var editarBtn = $("<button>").text("Editar");
-          var eliminarBtn = $("<button>").text("Eliminar");
-  
-          // Agregar eventos a los botones de editar y eliminar
-          editarBtn.on("click", function () {
-            // Acción para editar
-            editarDocumento(documento.DOC_ID);
-          });
-  
-          eliminarBtn.on("click", function () {
+  $.ajax({
+    url: "../Controlador/DocumentoControlador.php",
+    type: "POST",
+    data: {
+      accion: "buscarPorCodigo",
+      codigo: $("#txtCodigoBuscar").val()
+    },
+    dataType: "json",
+    success: function (json) {
+      $("#tblDocumentacion tbody").empty();
+      $.each(json.datos, function (index, documento) {
+        // Crear una nueva fila
+        var row = $("<tr>");
+
+        // Agregar las columnas de la tabla
+        row.append($("<td>").text(documento.DOC_NOMBRE));
+        row.append($("<td>").text(documento.DOC_CODIGO));
+        row.append($("<td>").text(documento.DOC_CONTENIDO));
+        row.append($("<td>").text(documento.PRO_NOMBRE));
+        row.append($("<td>").text(documento.TIP_NOMBRE));
+        // Agregar columna de Acción con opciones de editar y eliminar
+        var accionColumn = $("<td>");
+        var editarBtn = $("<button>").text("Editar").addClass("btn btn-success btn-sm");;
+        var eliminarBtn = $("<button>").text("Eliminar").addClass("btn btn-danger btn-sm");
+
+
+        // Agregar eventos a los botones de editar y eliminar
+        editarBtn.on("click", function () {
+          // Acción para editar
+          editarDocumento(documento.DOC_ID);
+        });
+
+        eliminarBtn.on("click", function () {
+          // Acción para eliminar
+          var confirmacion = confirm("¿Desea eliminar el documento?");
+          if (confirmacion) {
             // Acción para eliminar
             eliminarDocumento(documento.DOC_ID);
-          });
-  
-          // Agregar los botones a la columna de Acción
-          accionColumn.append(editarBtn);
-          accionColumn.append(eliminarBtn);
-  
-          // Agregar la columna de Acción a la fila
-          row.append(accionColumn);
-  
-          // Agregar la fila a la tabla
-          $("#tblDocumentacion tbody").append(row);
+          }
         });
-      },
-      error: function () {
-        console.log("Error al guardar los documentos");
-      },
-    });
+
+        // Agregar los botones a la columna de Acción
+        accionColumn.append(editarBtn);
+        accionColumn.append(eliminarBtn);
+
+        // Agregar la columna de Acción a la fila
+        row.append(accionColumn);
+
+        // Agregar la fila a la tabla
+        $("#tblDocumentacion tbody").append(row);
+      });
+    },
+    error: function () {
+      console.log("Error al guardar los documentos");
+    },
+  });
+}
+
+
+function cerrarSession() {
+  $.ajax({
+    url: "../Controlador/SesionControlador.php",
+    type: "POST",
+    data: {},
+    dataType: "json",
+    success: function (json) {
+      window.location.href = json.datos.rutaLogin;
+    },
+    error: function () {
+      console.log("Error al cerrar session");
+    },
+  });
+}
+
+function validacionesGuardar() {
+  // Validar nombre
+  var nombre = $("#txtNombre").val();
+  if (nombre.trim() === "") {
+    alert("Debe seleccionar un nombre válido");
+    return;
   }
 
+  // Validar contenido
+  var contenido = $("#txtContenido").val();
+  if (contenido.trim() === "") {
+    alert("Debe seleccionar un contenido válido");
+    return;
+  }
 
-function cerrarSession(){
-    $.ajax({
-        url: "../Controlador/SesionControlador.php",
-        type: "POST",
-        data: {},
-        dataType: "json",
-        success: function (json) {
-            window.location.href = json.datos.rutaLogin;
-        },
-        error: function () {
-          console.log("Error al cerrar session");
-        },
-      });
+  // Validar tipo de documento
+  var tipoDocumento = $("#selTipoDocumento").val();
+  if (tipoDocumento === "") {
+    alert("Debe seleccionar un tipo de documento");
+    return;
+  }
+
+  // Validar proceso
+  var proceso = $("#selProceso").val();
+  if (proceso === "") {
+    alert("Debe seleccionar un proceso");
+    return;
+  }
+}
+
+function limpiar() {
+  $("#txtNombre").val('');
+  $("#txtContenido").val('');
+  $("#selTipoDocumento").val('');
+  $("#selProceso").val('');
 }

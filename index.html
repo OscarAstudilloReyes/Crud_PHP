@@ -1,8 +1,37 @@
 <meta charset="UTF-8">
-<form  method="POST" action="login.php" >
-    <label for="usuario">usuario:</label>
-    <input type="text" id="usuario" name="usuario" required><br><br>
-    <label for="contrasenia">contraseña:</label>
-    <input type="password" id="contrasenia" name="contrasenia" required><br><br>
-    <input type="submit" value="Submit">
-</form>
+<script src="./vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
+<link href="./vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    .form-contenedor {
+      max-width: 450px;
+      margin: 0 auto;
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 10px;
+    }
+  </style>
+
+<div class="container ">
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-6">
+        <div class="form-contenedor">
+
+        <h2 class="text-center mb-4">Inicio de Sesión</h2>
+
+        <form method="POST" action="login.php" >
+          <div class="mb-3">
+            <label for="inputEmail" class="form-label">Usuario</label>
+            <input type="text" class="form-control" maxlength="5" id="usuario" name="usuario"  placeholder="Ingresa tu correo electrónico" required>
+          </div>
+          <div class="mb-3">
+            <label for="inputPassword" class="form-label">Contraseña</label>
+            <input type="password" class="form-control"  maxlength="3" id="contrasenia" name="contrasenia" placeholder="Ingresa tu contraseña" required>
+          </div>
+          <div class="mb-3 d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    </div>
