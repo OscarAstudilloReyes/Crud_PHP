@@ -122,10 +122,10 @@ class Documento
     public function generarCodigoDocumento($datos) {
         $retorno = ['exito' => 1, 'datos' => [], 'mensaje' => ''];
         $res = $this->obtenerUltimoConsecutivo($datos['idTipoDocumento'], $datos['idProceso']);
-
-  
-        $res['datos']['maximo'] == null ? 1 : $res['datos']['maximo'] ;
-        $nuevoConsecutivo = $res['datos']['maximo']   + 1;
+        
+        $consecutivo = explode('-',$res['datos']['DOC_CODIGO'])[2];
+        $consecutivo  == null ? 1 : $consecutivo  ;
+        $nuevoConsecutivo =  $consecutivo   + 1;
 
         $codigo = $datos['tipoDocumentoPrefijo'] . '-' . $datos['procesoPrefijo'] . '-' . $nuevoConsecutivo;
         $retorno['exito'] = 1;
@@ -138,7 +138,7 @@ class Documento
     
     $retorno = ['exito' => 1, 'datos' => [], 'mensaje' => ''];
     try {
-    $sql = "SELECT MAX(DOC_ID) AS maximo FROM doc_documento WHERE DOC_ID_TIPO = {$idTipoDocumento} AND DOC_ID_PROCESO = {$idProceso}";
+    $sql = "SELECT MAX(DOC_ID) AS maximo, DOC_CODIGO FROM doc_documento WHERE DOC_ID_TIPO = {$idTipoDocumento} AND DOC_ID_PROCESO = {$idProceso} GROUP BY DOC_ID, DOC_CODIGO";
             $rw = $this->db->query($sql);
             $retorno['exito'] = 1;
             $retorno['datos'] = $rw->fetch();
