@@ -128,7 +128,6 @@ class Documento
         }
         
         $nuevoConsecutivo =  $consecutivo   + 1;
-
         $codigo = $datos['tipoDocumentoPrefijo'] . '-' . $datos['procesoPrefijo'] . '-' . $nuevoConsecutivo;
         $retorno['exito'] = 1;
         $retorno['datos'] = ['codigo' => $codigo];
@@ -140,7 +139,7 @@ class Documento
     
     $retorno = ['exito' => 1, 'datos' => [], 'mensaje' => ''];
     try {
-    $sql = "SELECT MAX(DOC_ID) AS maximo, DOC_CODIGO FROM doc_documento WHERE DOC_ID_TIPO = {$idTipoDocumento} AND DOC_ID_PROCESO = {$idProceso} GROUP BY DOC_ID, DOC_CODIGO";
+    $sql = "SELECT MAX(DOC_ID) AS maximo, DOC_CODIGO FROM doc_documento WHERE DOC_ID_TIPO = {$idTipoDocumento} AND DOC_ID_PROCESO = {$idProceso} GROUP BY DOC_ID, DOC_CODIGO order by DOC_ID desc limit 1";
             $rw = $this->db->query($sql);
             $retorno['exito'] = 1;
             $retorno['datos'] = $rw->fetch();
